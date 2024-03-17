@@ -1,6 +1,6 @@
 // Function to request a new client ID from the server
 function getNewClientId() {
-  fetch('https://1395d938-7bb8-4043-a154-2d6df4baa2cb-00-ee9u4555vn44.spock.replit.dev/clientId/new', {
+  fetch('https://back-end-server-azc1.onrender.com/clientId/new', {
     method: 'GET',
   })
     .then(function(response) {
@@ -26,7 +26,7 @@ function sendMessage() {
   var newMessage = document.getElementById("new-message").value;
   var clientId = localStorage.getItem('clientId');
 
-  fetch('https://1395d938-7bb8-4043-a154-2d6df4baa2cb-00-ee9u4555vn44.spock.replit.dev/msg/post/' + newMessage + '/' + clientId, {
+  fetch('https://back-end-server-azc1.onrender.com/msg/post/' + newMessage + '/' + clientId, {
     method: 'GET',
   })
     .then(function(response) {
@@ -60,7 +60,7 @@ function updateMessageList() {
       "#20c997", // Teal
   ];
 
-  fetch('https://1395d938-7bb8-4043-a154-2d6df4baa2cb-00-ee9u4555vn44.spock.replit.dev/msg/getAll')
+  fetch('https://back-end-server-azc1.onrender.com/msg/getAll')
     .then(function(response) {
       return response.json();
     })
