@@ -1,0 +1,66 @@
+/* Add your custom CSS here */
+
+/* Adjustments for the header */
+header {
+    padding: 20px 0; /* Increase padding for better spacing */
+}
+
+/* Styling for the main content area */
+main {
+    background-color: #f9f9f9; /* Light background color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px; /* Add some padding */
+}
+
+/* Styling for the message list */
+#message-list {
+    padding: 0; /* Reset padding */
+}
+
+/* Styling for individual messages */
+.message {
+    margin-bottom: 15px;
+    margin-left: 40px;
+    padding: 10px 15px; /* Add padding */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+    display: block; /* Display as block */
+    max-width: 80%; /* Set a maximum width */
+    word-wrap: break-word; /* Break long words if needed */
+    word-break: break-all; /* Break words at any character */
+    overflow: hidden; /* Hide overflow */
+}
+
+.user-message {
+    background-color: #007bff; /* Blue background for user's messages */
+    color: #fff; /* White text color */
+}
+
+.box {
+  margin-bottom: 50px;
+  padding: 20px 15px ; /* Add padding */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+  display: block; /* Display as block */
+  max-width: 80%; /* Set a maximum width */
+  word-wrap: break-word; /* Break long words if needed */
+  word-break: break-all; /* Break words at any character */
+  overflow: hidden; /* Hide overflow */
+}
+
+/* Styling for the textarea */
+textarea {
+    resize: none; /* Disable resizing */
+}
+
+/* Additional button styling */
+button[type="submit"] {
+    width: 100%; /* Make the button full width */
+}
+
+/* Adjustments for button hover effect */
+button[type="submit"]:hover {
+    opacity: 0.8; /* Reduce opacity on hover */
+}
+
+
