@@ -7,32 +7,31 @@
   <title>Ma Super Application de Messages</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
 </head>
 
 <body>
   <header class="bg-dark text-white py-4">
     <div class="container text-center">
-      <h1 class="mb-0">Messages Importants</h1>
+      <h1 class="mb-0 text-3xl">Messages Importants</h1>
     </div>
   </header>
 
-  <main class="py-4">
-    <div class="container">
-      <div class="box">
+  <main class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
+    <div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
+      <div class="flex flex-col flex-grow h-0 p-4 overflow-auto">
         <ul id="message-list">
         </ul>
       </div>
 
-      <form id="message-form">
-        <div class="form-group">
-          <label for="new-message">Nouveau Message:</label>
-          <textarea class="form-control" id="new-message"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Envoyer</button>
+      <form id="message-form" class="bg-gray-300 p-4 flex">
+        <input id="new-message" class="flex items-center h-10 w-full rounded px-3 text-sm w-10" type="text"
+          placeholder="Type your message…">
+        <button type="submit" class="btn btn-primary ml-2" style="width: 20%;">Envoyer</button>
       </form>
     </div>
   </main>
-
+  
   <script src="script.js"></script>
 </body>
 

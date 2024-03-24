@@ -35,6 +35,7 @@ function sendMessage() {
     .then(function(data) {
       if (data.code === 1) {
         updateMessageList();
+        document.getElementById("new-message").value = "";
       } else {
         alert("Error adding the message.");
       }
@@ -48,16 +49,16 @@ function sendMessage() {
 function updateMessageList() {
   // Mapping of clientId to colors
   const colorMap = [
-      "#007bff", // Blue
-      "#28a745", // Green
-      "#dc3545", // Red
-      "#ffc107", // Yellow
-      "#6610f2", // Purple
-      "#17a2b8", // Cyan
-      "#fd7e14", // Orange
-      "#6f42c1", // Indigo
-      "#e83e8c", // Pink
-      "#20c997", // Teal
+    "#007bff", // Blue
+    "#28a745", // Green
+    "#dc3545", // Red
+    "#ffc107", // Yellow
+    "#6610f2", // Purple
+    "#17a2b8", // Cyan
+    "#fd7e14", // Orange
+    "#6f42c1", // Indigo
+    "#e83e8c", // Pink
+    "#20c997", // Teal
   ];
 
   fetch('https://back-end-server-azc1.onrender.com/msg/getAll')
@@ -70,21 +71,50 @@ function updateMessageList() {
         messageList.innerHTML = "";
 
         messages.forEach(function(message) {
-          var messageBox = document.createElement("div");
-          messageBox.classList.add("message");
-          messageBox.textContent = message.message;
+          var messageContainer = document.createElement("div");
+          var messageContent = document.createElement("div");
+          messageContainer.classList.add("flex", "w-full", "mt-2", "space-x-3", "max-w-xs");
 
-          // Set background color based on clientId
-          messageBox.style.backgroundColor = colorMap[message.clientId % colorMap.length];
-         
+          // Check if the message's client ID matches the current client ID
+          if (message.clientId.toString() === localStorage.getItem('clientId')) {
+            messageContainer.classList.add("ml-auto", "justify-end"); // Apply styling for current client ID
+            messageContent.classList.add("bg-blue-600", "text-white", "p-3", "rounded-l-lg", "rounded-br-lg");
+          }
+          else {
+            messageContent.classList.add("bg-gray-300", "p-3", "rounded-r-lg", "rounded-bl-lg");
+          }
+          
+          var avatar = document.createElement("div");
+          avatar.classList.add("flex-shrink-0", "h-10", "w-10", "rounded-full");
+          avatar.style.backgroundColor = colorMap[message.clientId % colorMap.length];
 
-          messageList.appendChild(messageBox);
+          var messageText = document.createElement("p");
+          messageText.classList.add("text-sm");
+          messageText.textContent = message.message;
+
+          messageContent.appendChild(messageText);
+
+          if (message.clientId.toString() === localStorage.getItem('clientId')) {
+            messageContainer.appendChild(messageContent);
+            messageList.appendChild(messageContainer);
+            messageContainer.appendChild(avatar);
+          }
+          else {
+            messageContainer.appendChild(avatar);
+            messageContainer.appendChild(messageContent);
+            messageList.appendChild(messageContainer);
+          }
+
+          document.getElementById("new-message").value = "";
+          
         });
       } else {
         alert("No messages available");
       }
     });
 }
+
+
 
 
 // Fetch new client ID when the page loads
