@@ -83,7 +83,7 @@ function updateMessageList() {
           else {
             messageContent.classList.add("bg-gray-300", "p-3", "rounded-r-lg", "rounded-bl-lg");
           }
-          
+
           var avatar = document.createElement("div");
           avatar.classList.add("flex-shrink-0", "h-10", "w-10", "rounded-full");
           avatar.style.backgroundColor = colorMap[message.clientId % colorMap.length];
@@ -106,7 +106,7 @@ function updateMessageList() {
           }
 
           document.getElementById("new-message").value = "";
-          
+
         });
       } else {
         alert("No messages available");
@@ -114,12 +114,10 @@ function updateMessageList() {
     });
 }
 
-
-
-
 // Fetch new client ID when the page loads
 document.addEventListener("DOMContentLoaded", function() {
   getNewClientId();
+  setInterval(updateMessageList, 3000);
 });
 
 document.getElementById("message-form").addEventListener("submit", function(event) {
