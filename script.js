@@ -1,94 +1,88 @@
-// Function to request a new client ID from the server
+const serverURL = 'https://back-end-server-azc1.onrender.com';
+
 function getNewClientId() {
-  fetch('https://back-end-server-azc1.onrender.com/clientId/new', {
+  fetch(`${serverURL}/clientId/new`, {
     method: 'GET',
   })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
+    .then(response => response.json())
+    .then(data => {
       if (data.code === 1) {
-        // Store the client ID in localStorage for future use
         localStorage.setItem('clientId', data.clientId);
-        // Start fetching messages after receiving the client ID
         updateMessageList();
       } else {
         alert("Error getting client ID.");
       }
     })
-    .catch(function(error) {
+    .catch(error => {
       console.error('Error getting client ID:', error);
     });
 }
 
-// Function to send a message to the micro-service
 function sendMessage() {
-  var newMessage = document.getElementById("new-message").value;
-  var clientId = localStorage.getItem('clientId');
+  const newMessage = document.getElementById("new-message").value;
+  const clientId = localStorage.getItem('clientId');
+  const picture = document.getElementById("new-picture").files[0];
+  const formData = new FormData();
+  formData.append('message', newMessage);
+  formData.append('picture', picture);
 
-  fetch('https://back-end-server-azc1.onrender.com/msg/post/' + newMessage + '/' + clientId, {
-    method: 'GET',
+  fetch(`${serverURL}/msg/post/${clientId}`, {
+    method: 'POST',
+    body: formData,
   })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
+    .then(response => response.json())
+    .then(data => {
       if (data.code === 1) {
         updateMessageList();
         document.getElementById("new-message").value = "";
+        document.getElementById("new-picture").value = "";
       } else {
         alert("Error adding the message.");
       }
     })
-    .catch(function(error) {
+    .catch(error => {
       console.error('Error sending message:', error);
     });
 }
 
-// Function to update the message list on the page
 function updateMessageList() {
-  // Mapping of clientId to colors
   const colorMap = [
-    "#007bff", // Blue
-    "#28a745", // Green
-    "#dc3545", // Red
-    "#ffc107", // Yellow
-    "#6610f2", // Purple
-    "#17a2b8", // Cyan
-    "#fd7e14", // Orange
-    "#6f42c1", // Indigo
-    "#e83e8c", // Pink
-    "#20c997", // Teal
+    "#007bff", "#28a745", "#dc3545", "#ffc107", "#6610f2", 
+    "#17a2b8", "#fd7e14", "#6f42c1", "#e83e8c", "#20c997"
   ];
 
-  fetch('https://back-end-server-azc1.onrender.com/msg/getAll')
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(messages) {
+  fetch(`${serverURL}/msg/getAll`)
+    .then(response => response.json())
+    .then(messages => {
       if (messages.length > 0) {
-        var messageList = document.getElementById("message-list");
+        const messageList = document.getElementById("message-list");
         messageList.innerHTML = "";
 
-        messages.forEach(function(message) {
-          var messageContainer = document.createElement("div");
-          var messageContent = document.createElement("div");
+        messages.forEach(message => {
+          const messageContainer = document.createElement("div");
+          const messageContent = document.createElement("div");
           messageContainer.classList.add("flex", "w-full", "mt-2", "space-x-3", "max-w-xs");
 
-          // Check if the message's client ID matches the current client ID
           if (message.clientId.toString() === localStorage.getItem('clientId')) {
-            messageContainer.classList.add("ml-auto", "justify-end"); // Apply styling for current client ID
+            messageContainer.classList.add("ml-auto", "justify-end");
             messageContent.classList.add("bg-blue-600", "text-white", "p-3", "rounded-l-lg", "rounded-br-lg");
-          }
-          else {
+          } else {
             messageContent.classList.add("bg-gray-300", "p-3", "rounded-r-lg", "rounded-bl-lg");
           }
 
-          var avatar = document.createElement("div");
+          const avatar = document.createElement("div");
           avatar.classList.add("flex-shrink-0", "h-10", "w-10", "rounded-full");
           avatar.style.backgroundColor = colorMap[message.clientId % colorMap.length];
 
-          var messageText = document.createElement("p");
+          if (message.picture) {
+            const image = document.createElement("img");
+            image.src = `${serverURL}/${message.picture}`;
+            image.classList.add("max-w-full", "h-auto", "rounded-lg");
+            messageContent.appendChild(image);
+            console.log("Image URL:", image.src);
+          }
+
+          const messageText = document.createElement("p");
           messageText.classList.add("text-sm");
           messageText.textContent = message.message;
 
@@ -98,18 +92,19 @@ function updateMessageList() {
             messageContainer.appendChild(messageContent);
             messageList.appendChild(messageContainer);
             messageContainer.appendChild(avatar);
-          }
-          else {
+          } else {
             messageContainer.appendChild(avatar);
             messageContainer.appendChild(messageContent);
             messageList.appendChild(messageContainer);
           }
         });
       }
+    })
+    .catch(error => {
+      console.error('Error updating message list:', error);
     });
 }
 
-// Fetch new client ID when the page loads
 document.addEventListener("DOMContentLoaded", function() {
   getNewClientId();
   setInterval(updateMessageList, 3000);
