@@ -108,8 +108,6 @@ function updateMessageList() {
           document.getElementById("new-message").value = "";
 
         });
-      } else {
-        alert("No messages available");
       }
     });
 }
