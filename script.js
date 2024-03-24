@@ -104,9 +104,6 @@ function updateMessageList() {
             messageContainer.appendChild(messageContent);
             messageList.appendChild(messageContainer);
           }
-
-          document.getElementById("new-message").value = "";
-
         });
       }
     });
